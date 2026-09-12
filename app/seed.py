@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from .models import Racket
@@ -92,21 +92,21 @@ RACKETS = [
     {
         "brand": "Adidas", "name": "Arrow Hit", "level": "professional", "style": "power",
         "shape": "diamond", "weight_text": "360–375 g", "weight_avg": 367.5, "balance_text": "Head Heavy",
-        "balance_mm": None, "balance_group": "high", "price_text": "€160", "source_name": "All For Padel",
+        "balance_mm": None, "balance_group": "high", "price_text": "€400", "source_name": "All For Padel",
         "source_url": "https://allforpadel.com/en/padel-rackets/7523-padel-racket-adidas-arrow-hit-8435739405888.html",
         "description": "PRO level; attack game, diamond shape и head-heavy balance по данным карточки производителя.",
     },
     {
         "brand": "Adidas", "name": "Arrow Hit CTRL", "level": "professional", "style": "control",
         "shape": "round", "weight_text": "360–375 g", "weight_avg": 367.5, "balance_text": "Even",
-        "balance_mm": None, "balance_group": "even", "price_text": "€168", "source_name": "All For Padel",
+        "balance_mm": None, "balance_group": "even", "price_text": "€400", "source_name": "All For Padel",
         "source_url": "https://allforpadel.com/en/padel-rackets/7526-padel-racket-adidas-arrow-hit-ctrl-8435739405895.html",
         "description": "PRO level; round shape и even balance по данным карточки производителя.",
     },
     {
         "brand": "Adidas", "name": "Match Black 2026", "level": "beginner", "style": "balanced",
         "shape": "allround", "weight_text": "360–375 g", "weight_avg": 367.5, "balance_text": "Slightly Head Heavy",
-        "balance_mm": None, "balance_group": "high", "price_text": "€234", "source_name": "All For Padel",
+        "balance_mm": None, "balance_group": "high", "price_text": "€75", "source_name": "All For Padel",
         "source_url": "https://allforpadel.com/en/padel-rackets/7493-padel-racket-adidas-match-black-2026-8435739406052.html",
         "description": "Beginner level; allround shape и slightly head-heavy balance по данным карточки производителя.",
     },
@@ -114,8 +114,17 @@ RACKETS = [
 
 
 def seed_database(session: Session) -> None:
-    if session.scalar(select(Racket.id).limit(1)) is not None:
-        return
-    session.add_all(Racket(**racket) for racket in RACKETS)
+    if session.scalar(select(Racket.id).limit(1)) is None:
+        session.add_all(Racket(**racket, verified=True) for racket in RACKETS)
+    else:
+        # One-time correction of known seed mistakes, not live price updates.
+        # Preserve prices that were already changed manually.
+        old_prices = {"Arrow Hit": "€160", "Arrow Hit CTRL": "€168", "Match Black 2026": "€234"}
+        for item in RACKETS:
+            if item["brand"] == "Adidas" and item["name"] in old_prices:
+                session.execute(update(Racket).where(
+                    Racket.brand == item["brand"], Racket.name == item["name"],
+                    Racket.source_url == item["source_url"],
+                    Racket.price_text == old_prices[item["name"]],
+                ).values(price_text=item["price_text"]))
     session.commit()
-
