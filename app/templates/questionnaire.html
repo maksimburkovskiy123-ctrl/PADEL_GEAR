@@ -3,13 +3,17 @@
 {% block content %}
 <section class="form-page"><p class="eyebrow">Короткая анкета</p><h1>Расскажите о своей игре</h1><p class="lead-small">Ответы нужны только для расчета подборки. Регистрация не требуется.</p>
   <form class="questionnaire" method="get" action="{{ url_for('recommendations') }}">
-    <fieldset><legend>1. Ваш уровень</legend><label><input required type="radio" name="level" value="beginner"> Начальный</label><label><input type="radio" name="level" value="intermediate"> Средний</label><label><input type="radio" name="level" value="advanced"> Продвинутый</label><label><input type="radio" name="level" value="professional"> Профессиональный</label></fieldset>
-    <fieldset><legend>2. Какой стиль ближе?</legend><label><input required type="radio" name="style" value="control"> Контроль</label><label><input type="radio" name="style" value="balanced"> Универсальная игра</label><label><input type="radio" name="style" value="attack"> Атака</label></fieldset>
-    <fieldset><legend>3. Что важнее при выборе?</legend><label><input required type="radio" name="priority" value="control"> Контроль</label><label><input type="radio" name="priority" value="power"> Мощность</label><label><input type="radio" name="priority" value="maneuverability"> Маневренность</label></fieldset>
-    <fieldset><legend>4. Предпочтительный вес</legend><label><input required type="radio" name="weight" value="light"> Легкий</label><label><input type="radio" name="weight" value="medium"> Средний</label><label><input type="radio" name="weight" value="heavy"> Тяжелый</label></fieldset>
-    <fieldset><legend>5. Предпочтительный баланс</legend><label><input required type="radio" name="balance" value="low"> Низкий</label><label><input type="radio" name="balance" value="even"> Средний</label><label><input type="radio" name="balance" value="high"> Высокий</label></fieldset>
+    {% if errors %}<div class="notice" role="alert">Проверьте отмеченные вопросы. Корректные ответы сохранены.</div>{% endif %}
+    {% set titles = {'level': 'Ваш уровень', 'style': 'Какой стиль ближе?', 'priority': 'Что важнее при выборе?', 'weight': 'Предпочтительный вес', 'balance': 'Предпочтительный баланс'} %}
+    {% for key, options in answer_options.items() %}
+    <fieldset {% if key in errors %}aria-describedby="error-{{ key }}"{% endif %}>
+      <legend>{{ loop.index }}. {{ titles[key] }}</legend>
+      {% if key in errors %}<p class="field-error" id="error-{{ key }}">{{ errors[key] }}</p>{% endif %}
+      {% for value, label in options.items() %}<label><input required type="radio" name="{{ key }}" value="{{ value }}" {% if answers.get(key) == value %}checked{% endif %}> {{ label }}</label>{% endfor %}
+    </fieldset>
+    {% endfor %}
+    <p class="muted">Условные группы баланса: до 260 мм, 261–269 мм и от 270 мм; при словесном описании используется категория производителя. Это упрощение, не точная оценка маневренности.</p>
     <button class="button primary" type="submit">Показать рекомендации →</button>
   </form>
 </section>
 {% endblock %}
-
