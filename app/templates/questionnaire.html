@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Подбор ракетки — Padel Match{% endblock %}
+{% block content %}
+<section class="form-page"><p class="eyebrow">Короткая анкета</p><h1>Расскажите о своей игре</h1><p class="lead-small">Ответы нужны только для расчета подборки. Регистрация не требуется.</p>
+  <form class="questionnaire" method="get" action="{{ url_for('recommendations') }}">
+    <fieldset><legend>1. Ваш уровень</legend><label><input required type="radio" name="level" value="beginner"> Начальный</label><label><input type="radio" name="level" value="intermediate"> Средний</label><label><input type="radio" name="level" value="advanced"> Продвинутый</label><label><input type="radio" name="level" value="professional"> Профессиональный</label></fieldset>
+    <fieldset><legend>2. Какой стиль ближе?</legend><label><input required type="radio" name="style" value="control"> Контроль</label><label><input type="radio" name="style" value="balanced"> Универсальная игра</label><label><input type="radio" name="style" value="attack"> Атака</label></fieldset>
+    <fieldset><legend>3. Что важнее при выборе?</legend><label><input required type="radio" name="priority" value="control"> Контроль</label><label><input type="radio" name="priority" value="power"> Мощность</label><label><input type="radio" name="priority" value="maneuverability"> Маневренность</label></fieldset>
+    <fieldset><legend>4. Предпочтительный вес</legend><label><input required type="radio" name="weight" value="light"> Легкий</label><label><input type="radio" name="weight" value="medium"> Средний</label><label><input type="radio" name="weight" value="heavy"> Тяжелый</label></fieldset>
+    <fieldset><legend>5. Предпочтительный баланс</legend><label><input required type="radio" name="balance" value="low"> Низкий</label><label><input type="radio" name="balance" value="even"> Средний</label><label><input type="radio" name="balance" value="high"> Высокий</label></fieldset>
+    <button class="button primary" type="submit">Показать рекомендации →</button>
+  </form>
+</section>
+{% endblock %}
+
