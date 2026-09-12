@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Каталог ракеток — Padel Match{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Каталог</p><h1>Найдите свою модель</h1><p class="muted">В каталоге только модели с сохраненным источником характеристик.</p></div>
+  <a class="button secondary" href="{{ url_for('recommend_form') }}">Подобрать по анкете</a>
+</section>
+<form class="filters" method="get" action="{{ url_for('catalog') }}">
+  <label>Бренд<select name="brand"><option value="">Все бренды</option>{% for item in brands %}<option value="{{ item }}" {% if filters.brand == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></label>
+  <label>Уровень<select name="level"><option value="">Любой уровень</option>{% for key, value in labels.level.items() %}<option value="{{ key }}" {% if filters.level == key %}selected{% endif %}>{{ value }}</option>{% endfor %}</select></label>
+  <label>Форма<select name="shape"><option value="">Любая форма</option>{% for key, value in labels.shape.items() %}<option value="{{ key }}" {% if filters.shape == key %}selected{% endif %}>{{ value }}</option>{% endfor %}</select></label>
+  <label>Баланс<select name="balance"><option value="">Любой баланс</option>{% for key, value in labels.balance.items() if key != 'unknown' %}<option value="{{ key }}" {% if filters.balance == key %}selected{% endif %}>{{ value }}</option>{% endfor %}</select></label>
+  <button class="button primary" type="submit">Применить</button>
+  <a class="clear-filter" href="{{ url_for('catalog') }}">Сбросить</a>
+</form>
+<form method="get" action="{{ url_for('compare') }}">
+  <div class="catalog-toolbar"><span class="muted">Найдено моделей: <b>{{ rackets|length }}</b></span><button class="button dark" type="submit">Сравнить выбранные</button></div>
+  {% if rackets %}
+  <div class="racket-grid">
+    {% for racket in rackets %}
+    <article class="racket-card">
+      <div class="racket-visual tone-{{ loop.index % 3 }}"><span></span><small>{{ racket.brand }}</small></div>
+      <div class="card-content">
+        <label class="compare-check"><input type="checkbox" name="ids" value="{{ racket.id }}"> В сравнение</label>
+        <p class="tag">{{ labels.style.get(racket.style, racket.style) }}</p>
+        <h2>{{ racket.brand }} {{ racket.name }}</h2>
+        <p class="muted">{{ racket.description }}</p>
+        <div class="meta"><span>{{ racket.weight_text }}</span><span>{{ racket.balance_text }}</span></div>
+        <div class="card-bottom"><strong>{{ racket.price_text }}</strong><a href="{{ url_for('racket_detail', racket_id=racket.id) }}">Подробнее →</a></div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}<div class="empty"><h2>По выбранным фильтрам моделей нет</h2><a class="button secondary" href="{{ url_for('catalog') }}">Показать весь каталог</a></div>{% endif %}
+</form>
+{% endblock %}
+
