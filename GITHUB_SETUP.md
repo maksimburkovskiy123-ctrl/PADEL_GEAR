@@ -2,18 +2,15 @@
 
 В проект добавлен workflow `.github/workflows/tests.yml`. После каждого push или pull request GitHub будет автоматически устанавливать зависимости и запускать тесты.
 
-## Первый push
+## Обновление репозитория
 
-После создания пустого репозитория на GitHub выполнить в корне проекта:
+Репозиторий уже создан: `https://github.com/maksimburkovskiy123-ctrl/PADEL_GEAR`.
+После изменений выполнить в корне проекта:
 
 ```bash
-git init
 git add .
-git commit -m "Prepare padel racket recommendation MVP"
-git branch -M main
-git remote add origin https://github.com/<username>/<repository>.git
-git push -u origin main
+git commit -m "Finish MVP and add teacher launch scripts"
+git push origin main
 ```
 
-Вместо `<username>` и `<repository>` нужно указать данные созданного репозитория. Файлы базы SQLite, загруженные материалы и служебные файлы окружения исключены через `.gitignore`.
-
+Для push нужен вход в GitHub под аккаунтом с правом записи в репозиторий. Файлы базы SQLite, локальное окружение и служебные файлы исключены через `.gitignore`.
