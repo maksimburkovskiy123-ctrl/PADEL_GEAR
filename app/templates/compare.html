@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Сравнение — Padel Match{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Сравнение</p><h1>Модели рядом</h1><p class="muted">Выберите от двух до трех ракеток в каталоге.</p></div><a class="button secondary" href="{{ url_for('catalog') }}">Добавить модель</a></section>
+{% if too_many %}<div class="notice">Для сравнения используются только первые три выбранные модели.</div>{% endif %}
+{% if rackets|length < 2 %}
+<div class="empty"><h2>Здесь пока недостаточно моделей</h2><p class="muted">Выберите минимум две ракетки в каталоге.</p><a class="button primary" href="{{ url_for('catalog') }}">Перейти в каталог</a></div>
+{% else %}
+<div class="table-wrap"><table class="compare-table"><thead><tr><th>Параметр</th>{% for racket in rackets %}<th>{{ racket.brand }} {{ racket.name }}</th>{% endfor %}</tr></thead><tbody>
+  <tr><td>Игровой профиль</td>{% for racket in rackets %}<td>{{ labels.style.get(racket.style, racket.style) }}</td>{% endfor %}</tr>
+  <tr><td>Уровень</td>{% for racket in rackets %}<td>{{ labels.level.get(racket.level, racket.level) }}</td>{% endfor %}</tr>
+  <tr><td>Форма</td>{% for racket in rackets %}<td>{{ labels.shape.get(racket.shape, racket.shape) }}</td>{% endfor %}</tr>
+  <tr><td>Вес</td>{% for racket in rackets %}<td>{{ racket.weight_text }}</td>{% endfor %}</tr>
+  <tr><td>Баланс</td>{% for racket in rackets %}<td>{{ racket.balance_text }}</td>{% endfor %}</tr>
+  <tr><td>Цена, ориентир</td>{% for racket in rackets %}<td>{{ racket.price_text }}</td>{% endfor %}</tr>
+  <tr><td>Источник</td>{% for racket in rackets %}<td><a href="{{ racket.source_url }}" target="_blank" rel="noreferrer">{{ racket.source_name }} ↗</a></td>{% endfor %}</tr>
+</tbody></table></div>
+{% endif %}
+{% endblock %}
+
