@@ -22,5 +22,4 @@ class Racket(Base):
     source_name: Mapped[str] = mapped_column(String(120))
     source_url: Mapped[str] = mapped_column(String(500))
     description: Mapped[str] = mapped_column(Text)
-    verified: Mapped[bool] = mapped_column(Boolean, default=True)
-
+    verified: Mapped[bool] = mapped_column(Boolean, default=False)
