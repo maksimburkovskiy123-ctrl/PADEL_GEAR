@@ -14,12 +14,14 @@
         <a href="{{ url_for('home') }}">Главная</a>
         <a href="{{ url_for('catalog') }}">Каталог</a>
         <a href="{{ url_for('recommend_form') }}">Подбор</a>
-        <a href="{{ url_for('compare') }}">Сравнение</a>
+        <a href="{{ url_for('compare') }}">Сравнение <span class="selection-count">{{ selected_ids|length }}</span></a>
       </nav>
     </header>
-    <main>{% block content %}{% endblock %}</main>
+    <main>
+      {% if comparison_limit %}<div class="notice" role="status">Можно сравнить максимум три модели. Сначала удалите одну из выбранных на странице сравнения.</div>{% endif %}
+      {% block content %}{% endblock %}
+    </main>
     <footer class="footer">Padel Match · учебный MVP · цены ориентировочные</footer>
   </div>
 </body>
 </html>
-
