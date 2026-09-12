@@ -1,0 +1,2 @@
+"""Padel racket recommendation application."""
+
