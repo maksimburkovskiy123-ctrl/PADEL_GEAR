@@ -2,9 +2,9 @@
 {% block title %}{{ racket.brand }} {{ racket.name }} — Padel Match{% endblock %}
 {% block content %}
 <section class="detail-page">
-  <a class="back-link" href="{{ url_for('catalog') }}">← Вернуться в каталог</a>
+  <a class="back-link" href="{{ return_to }}">← Вернуться в каталог</a>
   <div class="detail-layout">
-    <div class="detail-visual tone-1"><span></span><small>{{ racket.brand }}</small></div>
+    <div class="detail-visual tone-1"><span></span><small>{{ racket.brand }} · условный силуэт, не фото</small></div>
     <div class="detail-copy">
       <p class="tag">{{ labels.style.get(racket.style, racket.style) }}</p>
       <h1>{{ racket.brand }} {{ racket.name }}</h1>
@@ -17,10 +17,15 @@
         <div><small>Цена, ориентир</small><strong>{{ racket.price_text }}</strong></div>
         <div><small>Проверка</small><strong>{% if racket.verified %}Источник сохранен{% else %}Требует проверки{% endif %}</strong></div>
       </div>
-      <div class="actions"><a class="button dark" href="{{ url_for('compare') }}?ids={{ racket.id }}">Добавить к сравнению</a><a class="button secondary" href="{{ racket.source_url }}" target="_blank" rel="noreferrer">Открыть источник ↗</a></div>
+      <div class="actions">
+        <form method="post" action="{{ url_for('toggle_comparison') }}?{{ {'racket_id': racket.id, 'return_to': detail_url}|urlencode }}">
+          <button class="button dark" type="submit">{{ 'Убрать из сравнения' if racket.id in selected_ids else 'Добавить к сравнению' }}</button>
+        </form>
+        <a class="button secondary" href="{{ url_for('compare') }}">Сравнение ({{ selected_ids|length }}/3)</a>
+        <a class="button secondary" href="{{ racket.source_url }}" target="_blank" rel="noreferrer">Открыть источник ↗</a>
+      </div>
       <p class="source-note">Источник: <b>{{ racket.source_name }}</b>. Цена и характеристики вводятся вручную и могут изменяться.</p>
     </div>
   </div>
 </section>
 {% endblock %}
-
