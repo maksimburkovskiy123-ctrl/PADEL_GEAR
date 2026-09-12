@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Рекомендации — Padel Match{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Ваш результат</p><h1>С чего начать выбор</h1><p class="muted">Оценка рассчитана по пяти объяснимым критериям.</p></div><a class="button secondary" href="{{ url_for('recommend_form') }}">Пройти заново</a></section>
+<div class="notice">Это рекомендация, а не медицинская или спортивная экспертиза. Перед покупкой проверьте актуальные характеристики и цену у продавца.</div>
+<div class="answers"><b>Учтено:</b> {{ labels.level.get(answers.level, answers.level) }} · {{ labels.style.get(answers.style, answers.style) }} · {{ labels.style.get(answers.priority, answers.priority) }} · {{ answers.weight }} вес · {{ answers.balance }} баланс</div>
+<section class="results-list">{% for result in results %}<article class="result-card"><div class="rank">0{{ loop.index }}</div><div><p class="tag">{{ labels.style.get(result.racket.style, result.racket.style) }}</p><h2>{{ result.racket.brand }} {{ result.racket.name }}</h2><p class="muted">{{ result.racket.description }}</p><div class="reasons">{% for reason in result.reasons %}<span>{{ reason }}</span>{% endfor %}</div></div><div class="score"><strong>{{ result.score }}</strong><small>/ 100</small></div><a class="button dark" href="{{ url_for('racket_detail', racket_id=result.racket.id) }}">Открыть карточку</a></article>{% endfor %}</section>
+{% endblock %}
+
