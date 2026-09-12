@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Padel Match — подбор ракетки{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">Подбор ракетки без лишних догадок</p>
+    <h1>Ракетка, которая подходит вашей игре.</h1>
+    <p class="lead">Сравните реальные модели, ответьте на несколько вопросов и получите объяснимую подборку.</p>
+    <div class="actions">
+      <a class="button primary" href="{{ url_for('recommend_form') }}">Пройти подбор</a>
+      <a class="button secondary" href="{{ url_for('catalog') }}">Открыть каталог</a>
+    </div>
+  </div>
+  <div class="hero-art"><span class="racket-shape"></span><b>MATCH YOUR GAME</b></div>
+</section>
+<section class="stats">
+  <div><strong>{{ count }}</strong><span>моделей в каталоге</span></div>
+  <div><strong>{{ brands }}</strong><span>бренда</span></div>
+  <div><strong>5</strong><span>критериев подбора</span></div>
+</section>
+<section class="steps">
+  <article><span class="step-number">01 / АНКЕТА</span><h2>Опишите свою игру</h2><p>Уровень, стиль и то, что важнее в ракетке.</p></article>
+  <article><span class="step-number">02 / СРАВНЕНИЕ</span><h2>Посмотрите разницу</h2><p>Сопоставьте две или три модели рядом.</p></article>
+  <article><span class="step-number">03 / ВЫБОР</span><h2>Поймите рекомендацию</h2><p>Каждый результат сопровождается причинами.</p></article>
+</section>
+{% endblock %}
