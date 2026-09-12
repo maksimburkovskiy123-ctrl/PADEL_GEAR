@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ racket.brand }} {{ racket.name }} — Padel Match{% endblock %}
+{% block content %}
+<section class="detail-page">
+  <a class="back-link" href="{{ url_for('catalog') }}">← Вернуться в каталог</a>
+  <div class="detail-layout">
+    <div class="detail-visual tone-1"><span></span><small>{{ racket.brand }}</small></div>
+    <div class="detail-copy">
+      <p class="tag">{{ labels.style.get(racket.style, racket.style) }}</p>
+      <h1>{{ racket.brand }} {{ racket.name }}</h1>
+      <p class="lead-small">{{ racket.description }}</p>
+      <div class="spec-grid">
+        <div><small>Уровень</small><strong>{{ labels.level.get(racket.level, racket.level) }}</strong></div>
+        <div><small>Форма</small><strong>{{ labels.shape.get(racket.shape, racket.shape) }}</strong></div>
+        <div><small>Вес</small><strong>{{ racket.weight_text }}</strong></div>
+        <div><small>Баланс</small><strong>{{ racket.balance_text }}</strong></div>
+        <div><small>Цена, ориентир</small><strong>{{ racket.price_text }}</strong></div>
+        <div><small>Проверка</small><strong>{% if racket.verified %}Источник сохранен{% else %}Требует проверки{% endif %}</strong></div>
+      </div>
+      <div class="actions"><a class="button dark" href="{{ url_for('compare') }}?ids={{ racket.id }}">Добавить к сравнению</a><a class="button secondary" href="{{ racket.source_url }}" target="_blank" rel="noreferrer">Открыть источник ↗</a></div>
+      <p class="source-note">Источник: <b>{{ racket.source_name }}</b>. Цена и характеристики вводятся вручную и могут изменяться.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
