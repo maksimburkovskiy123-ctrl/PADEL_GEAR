@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.bcode/
+uploads/
+AGENTS.md
+MEMORY.md
+.restore-marker
+.uploads-manifest.json
+.promote-manifest.json
+data/*.db
+data/*.sqlite
+
